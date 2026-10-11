@@ -5,11 +5,17 @@ import Keyboard from "@/components/Keyboard";
 import ExperienceClock from "@/components/ExperienceClock";
 import Marquee from "@/components/Marquee";
 import { ExperienceSection, ResearchSection, SkillsSection, WorkSection } from "@/components/Sections";
+import { personJsonLd } from "@/config/seo";
 import { CONTACT_URL, LINKS, PROFILE } from "@/config/site";
 
 export default function Home() {
   return (
     <DialogProvider>
+      <script
+        type="application/ld+json"
+        // Structured data for search engines: who this site is about.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }}
+      />
       <a className="skip-link" href="#main">
         Skip to content
       </a>

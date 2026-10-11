@@ -1,5 +1,6 @@
 import localFont from "next/font/local";
 import { Inter, Instrument_Serif } from "next/font/google";
+import { SEO, SITE_URL } from "@/config/seo";
 import "./globals.css";
 
 const satoshi = localFont({
@@ -28,9 +29,36 @@ const serif = Instrument_Serif({
 });
 
 export const metadata = {
-  title: "Sachin Sharma — Full-Stack AI Engineer",
-  description:
-    "Full-stack AI engineer working in software and ML since 2015. Co-founder of AskCodi, MakersClaw and Papersafe.",
+  metadataBase: new URL(SITE_URL),
+  title: SEO.title,
+  description: SEO.description,
+  keywords: SEO.keywords,
+  applicationName: SEO.shortTitle,
+  authors: [{ name: "Sachin Sharma", url: SITE_URL }],
+  creator: "Sachin Sharma",
+  category: "technology",
+  alternates: { canonical: "/" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
+  openGraph: {
+    type: "profile",
+    url: "/",
+    siteName: SEO.shortTitle,
+    title: SEO.title,
+    description: SEO.description,
+    locale: "en_US",
+    firstName: "Sachin",
+    lastName: "Sharma",
+    username: "himalyansailor",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SEO.shortTitle,
+    description: SEO.description,
+  },
 };
 
 export const viewport = {
