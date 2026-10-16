@@ -2,7 +2,7 @@ import { SITE_URL } from "@/config/seo";
 
 export const dynamic = "force-static";
 
-/** One-page site: a single URL. Section anchors (#work etc.) aren't separate pages. */
+/** The portfolio and the printable résumé. Section anchors (#work etc.) aren't separate pages. */
 export default function sitemap() {
   return [
     {
@@ -10,6 +10,12 @@ export default function sitemap() {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,
+    },
+    {
+      url: `${SITE_URL}/resume`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
     },
   ];
 }

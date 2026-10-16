@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { KEYS } from "@/config/site";
+import { CONTACT_URL, KEYS } from "@/config/site";
 import { useDialogs } from "./DialogProvider";
 
 const KEY_W = 146;
@@ -12,6 +12,12 @@ const START_DELAY = 800;
 const HOLD = 190;
 const GAP = 150;
 const REST = 1600;
+
+// Easter egg: typing the word on a physical keyboard.
+const SECRET = "portfolio";
+const WAVE_STEP = 70;
+const WAVE_HOLD = 220;
+const TOAST_MS = 6000;
 
 /** Thin angled seams joining the face corners to the base corners. */
 function Seams({ w, h }) {
@@ -107,6 +113,9 @@ export default function Keyboard() {
   const [pageHidden, setPageHidden] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(true); // assume reduced until checked
   const nextIndex = useRef(0);
+  const [typed, setTyped] = useState(() => new Set()); // keys pressed by typing / the wave
+  const [partying, setPartying] = useState(false);
+  const [toast, setToast] = useState(false);
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -122,7 +131,72 @@ export default function Keyboard() {
     };
   }, []);
 
-  const paused = pointerInside || keyFocused || isOpen || pageHidden || reducedMotion;
+  const paused = pointerInside || keyFocused || isOpen || pageHidden || reducedMotion || partying;
+
+  // Typing on a physical keyboard presses the matching on-screen key;
+  // typing the whole word sets off a wave and a little message.
+  useEffect(() => {
+    let progress = 0;
+    const timers = new Set();
+    const later = (fn, ms) => {
+      const id = setTimeout(() => {
+        timers.delete(id);
+        fn();
+      }, ms);
+      timers.add(id);
+    };
+    const tap = (index, at = 0) => {
+      later(() => setTyped((prev) => new Set(prev).add(index)), at);
+      later(
+        () =>
+          setTyped((prev) => {
+            const next = new Set(prev);
+            next.delete(index);
+            return next;
+          }),
+        at + WAVE_HOLD
+      );
+    };
+
+    const onKeyDown = (event) => {
+      if (event.metaKey || event.ctrlKey || event.altKey || event.repeat) return;
+      if (event.target.closest?.("input, textarea, select, [contenteditable]")) return;
+      if (document.querySelector("dialog[open]")) return;
+      const letter = event.key.toLowerCase();
+      if (letter.length !== 1) return;
+
+      if (letter === SECRET[progress]) {
+        tap(progress);
+        progress += 1;
+      } else {
+        progress = letter === SECRET[0] ? 1 : 0;
+        const match = KEYS.findIndex((k) => k.letter.toLowerCase() === letter);
+        if (match !== -1) tap(match);
+      }
+
+      if (progress === SECRET.length) {
+        progress = 0;
+        const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (!calm) {
+          setPartying(true);
+          for (let round = 0; round < 2; round++) {
+            KEYS.forEach((_, i) => tap(i, 400 + round * (KEYS.length * WAVE_STEP + 200) + i * WAVE_STEP));
+          }
+          later(() => setPartying(false), 400 + 2 * (KEYS.length * WAVE_STEP + 200) + WAVE_HOLD);
+        }
+        setToast(true);
+        later(() => setToast(false), TOAST_MS);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      timers.forEach(clearTimeout);
+      setTyped(new Set());
+      setPartying(false);
+    };
+  }, []);
 
   useEffect(() => {
     if (paused) return undefined;
@@ -166,9 +240,23 @@ export default function Keyboard() {
           onBlur={handleBlur}
         >
           {KEYS.map((key, index) => (
-            <Key key={key.id} data={key} pressed={pressed === index} onOpen={openDialog} />
+            <Key key={key.id} data={key} pressed={pressed === index || typed.has(index)} onOpen={openDialog} />
           ))}
         </div>
+      </div>
+      <p className="keyboard-hint" aria-hidden="true">
+        Psst: type <kbd>portfolio</kbd> on your keyboard.
+      </p>
+      <div className="egg-toast" role="status" data-show={toast || undefined}>
+        {toast && (
+          <>
+            <span>You found it. Now imagine what I’d build for your team.</span>
+            <a href={CONTACT_URL} target="_blank" rel="noopener noreferrer">
+              Let’s talk <span aria-hidden="true">↗</span>
+              <span className="sr-only"> on LinkedIn (opens in a new tab)</span>
+            </a>
+          </>
+        )}
       </div>
     </div>
   );

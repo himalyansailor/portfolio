@@ -1,6 +1,6 @@
 # Sachin Sharma — Portfolio
 
-Portfolio site for Sachin Sharma, full-stack AI engineer. A pastel keyboard that spells PORTFOLIO works as the main navigation, followed by selected work, experience, skills, research and contact. Built with Next.js (App Router) and exported as a static site.
+Portfolio site for Sachin Sharma, AI solutions architect and CTO. A pastel keyboard that spells PORTFOLIO works as the main navigation, followed by selected work, experience, skills, research and contact. Built with Next.js (App Router) and exported as a static site.
 
 ## Run it
 
@@ -37,6 +37,30 @@ All copy lives in `config/site.js`:
 - `KEYS`: key letters, captions, colours, positions and what each key does (`href` to a section or page, `external: true` to open in a new tab, or `dialog`).
 - `MARQUEE_MESSAGE`: the marquee sentence.
 
+Recruiter-facing content lives in `config/stories.js`:
+
+- `AVAILABILITY`: the "Open to … roles · Available now" badge in the hero. Set `open: false` to hide it.
+- `HIGHLIGHTS`: the at-a-glance numbers under the marquee.
+- `CASE_STUDIES`: the "How I architect" case studies. Each `stages` entry is a column in the clickable diagram.
+- `PRINCIPLES`, `LEADERSHIP`: "What I believe" and "How I lead".
+- `OPEN_SOURCE`: GitHub projects shown in "Built in the open".
+- `NOW`: the "Right now" list. Update `updated` when you change it.
+
+## Résumé PDF
+
+`/resume` is a one-page, print-ready résumé built from the same data, with no email, phone or location. The downloadable file is `public/Sachin-Sharma-Resume.pdf`. After changing content, regenerate it:
+
+```bash
+npm run build && npm start      # serves ./out on http://localhost:4173
+npm run resume                  # in a second terminal; rewrites the PDF
+```
+
+Then rebuild so the new PDF is copied into `./out`. (First time only: `npx playwright install chromium`.)
+
+## Easter egg
+
+Typing `portfolio` on a physical keyboard presses the keys in a wave and shows a "Let's talk" message. Each typed letter also presses its matching key.
+
 ## SEO and deploying
 
 Live address: **https://himalayansailor.vercel.app** (Vercel project name `himalayansailor`).
@@ -62,8 +86,12 @@ components/
   Keyboard.jsx        keys, automatic press sequence, pause rules
   Marquee.jsx         seamless two-group marquee
   Sections.jsx        work, experience, skills, research & education
+  CaseStudies.jsx     interactive architecture case studies
+  Stories.jsx         highlights, principles, leadership, open source, now
+  ResearchArt.jsx     the four research illustrations
 config/site.js        contact link, projects, copy, key data
 config/seo.js         site URL, title, description, keywords, structured data
+config/stories.js     availability, highlights, case studies, principles, leadership, open source, now
 ```
 
 ## Notes

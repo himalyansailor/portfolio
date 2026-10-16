@@ -1,6 +1,6 @@
 "use client";
 
-import { CONTACT_URL } from "@/config/site";
+import { CONTACT_URL, RESUME_PDF } from "@/config/site";
 import { useDialogs } from "./DialogProvider";
 
 export default function Header() {
@@ -19,6 +19,11 @@ export default function Header() {
             </a>
           </li>
           <li className="nav-optional">
+            <a className="nav-link" href="#case-studies">
+              Case studies
+            </a>
+          </li>
+          <li className="nav-optional">
             <a className="nav-link" href="#experience">
               Experience
             </a>
@@ -32,6 +37,12 @@ export default function Header() {
             >
               About
             </button>
+          </li>
+          <li>
+            <a className="nav-link" href={RESUME_PDF} download>
+              Résumé <span aria-hidden="true">↓</span>
+              <span className="sr-only"> (PDF)</span>
+            </a>
           </li>
           <li>
             <a className="button button-dark nav-cta" href={CONTACT_URL} target="_blank" rel="noopener noreferrer">

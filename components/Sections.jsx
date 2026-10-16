@@ -1,5 +1,6 @@
 import ExperienceClock from "./ExperienceClock";
-import { EDUCATION, EXPERIENCE, PROJECTS, RESEARCH, SKILLS } from "@/config/site";
+import { RESEARCH_ART } from "./ResearchArt";
+import { EDUCATION, EXPERIENCE, ML_PIPELINE, PROJECTS, RESEARCH, SKILLS } from "@/config/site";
 
 function SectionHead({ id, title, accent, lead }) {
   return (
@@ -12,9 +13,9 @@ function SectionHead({ id, title, accent, lead }) {
   );
 }
 
-function ExternalLink({ href, children }) {
+export function ExternalLink({ href, children, className }) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer">
+    <a className={className} href={href} target="_blank" rel="noopener noreferrer">
       {children}
       <span aria-hidden="true"> ↗</span>
       <span className="sr-only"> (opens in a new tab)</span>
@@ -29,7 +30,7 @@ export function WorkSection() {
         id="work-title"
         title="Selected"
         accent="work."
-        lead="Products I’ve co-founded and built, from system design to production."
+        lead="Companies I’ve led as CTO and co-founder, from architecture to production and, for Papersafe, acquisition."
       />
       <ul className="work-grid">
         {PROJECTS.map((project) => (
@@ -68,7 +69,7 @@ export function ExperienceSection() {
         id="experience-title"
         title="Since 2015,"
         accent="end to end."
-        lead="From enterprise banking software to computer vision research to running my own AI companies."
+        lead="From enterprise banking delivery and ML research to CTO of three AI companies."
       />
       <ExperienceClock size="large" />
       <ol className="timeline">
@@ -98,7 +99,7 @@ export function ExperienceSection() {
 export function SkillsSection() {
   return (
     <section className="section" id="skills" aria-labelledby="skills-title">
-      <SectionHead id="skills-title" title="The" accent="toolbox." lead="What I reach for when building and running AI products." />
+      <SectionHead id="skills-title" title="The" accent="toolbox." lead="How I lead, and the stack behind the systems I architect." />
       <ul className="skills-grid">
         {SKILLS.map((skill) => (
           <li key={skill.group} className="skill-card" style={{ "--card": skill.color }}>
@@ -123,37 +124,63 @@ export function SkillsSection() {
 export function ResearchSection() {
   return (
     <section className="section section-tint" id="research" aria-labelledby="research-title">
-      <SectionHead id="research-title" title="Research &" accent="education." />
-      <div className="research-grid">
-        <div>
-          <h3 className="column-title">Research &amp; selected projects</h3>
-          <ul className="research-list">
-            {RESEARCH.map((item) => (
-              <li key={item.title}>
-                <p className="research-title">
+      <SectionHead
+        id="research-title"
+        title="Research, from data to"
+        accent="deployed models."
+        lead="Before LLMs, I trained models from raw data: computer vision, pose estimation and multimodal recognition, taken from research to production."
+      />
+
+      <ol className="pipeline" aria-label="Applied ML research pipeline">
+        {ML_PIPELINE.map((stage) => (
+          <li key={stage.step} className="pipeline-card" style={{ "--card": stage.color }}>
+            <p className="pipeline-step" aria-hidden="true">
+              {stage.step}
+            </p>
+            <h3 className="pipeline-title">{stage.title}</h3>
+            <ul className="pipeline-points">
+              {stage.points.map((point) => (
+                <li key={point}>{point}</li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ol>
+
+      <h3 className="column-title">Papers, thesis &amp; research projects</h3>
+      <ol className="paper-list">
+        {RESEARCH.map((item) => {
+          const Art = RESEARCH_ART[item.art];
+          return (
+            <li key={item.title} className="paper" style={{ "--card": item.color }}>
+              <div className="paper-art">
+                <Art />
+              </div>
+              <div className="paper-body">
+                <p className="paper-kind">{item.kind}</p>
+                <h4 className="paper-title">
                   {item.href ? <ExternalLink href={item.href}>{item.title}</ExternalLink> : item.title}
-                </p>
-                {item.note && <p className="research-note">{item.note}</p>}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h3 className="column-title" id="education">
-            Education
-          </h3>
-          <ul className="research-list">
-            {EDUCATION.map((item) => (
-              <li key={item.degree}>
-                <p className="research-title">{item.degree}</p>
-                <p className="research-note">
-                  {item.school} · {item.year}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+                </h4>
+                <p className="paper-description">{item.description}</p>
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+
+      <h3 className="column-title education-title" id="education">
+        Education
+      </h3>
+      <ul className="education-list">
+        {EDUCATION.map((item) => (
+          <li key={item.degree}>
+            <p className="research-title">{item.degree}</p>
+            <p className="research-note">
+              {item.school} · {item.year}
+            </p>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

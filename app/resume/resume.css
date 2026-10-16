@@ -1,0 +1,138 @@
+/* Print-ready résumé (A4). Scoped to .resume. */
+.resume {
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 10mm 12mm;
+  background: #fff;
+  color: #1c1626;
+  font-family: var(--font-body);
+  font-size: 9pt;
+  line-height: 1.34;
+}
+
+.resume a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.r-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2.5px solid #111;
+}
+
+.r-name {
+  font-family: var(--font-display);
+  font-size: 24pt;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.r-role {
+  margin-top: 4px;
+  color: #d96c9c;
+  font-size: 10.5pt;
+  font-weight: 700;
+}
+
+.r-links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: right;
+  font-size: 8.6pt;
+  font-weight: 600;
+}
+
+.r-summary {
+  margin: 8px 0 2px;
+}
+
+.r-h2 {
+  margin: 7px 0 3px;
+  font-size: 8.2pt;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #d96c9c;
+}
+
+.r-job {
+  margin-bottom: 5px;
+  break-inside: avoid;
+}
+
+.r-job-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.r-job-head h3 {
+  font-size: 9.6pt;
+  font-weight: 800;
+}
+
+.r-job-head span {
+  flex-shrink: 0;
+  color: #5b5068;
+  font-weight: 600;
+}
+
+.r-job ul,
+.r-plain {
+  margin: 2px 0 0;
+  padding-left: 1.1em;
+}
+
+.r-plain {
+  padding-left: 0;
+  list-style: none;
+}
+
+.r-plain li {
+  margin-bottom: 2px;
+}
+
+.r-cols {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 16px;
+}
+
+.r-skills {
+  margin: 0;
+}
+
+.r-skills div {
+  margin-bottom: 2px;
+}
+
+.r-skills dt {
+  display: inline;
+  font-weight: 800;
+}
+
+.r-skills dt::after {
+  content: ": ";
+}
+
+.r-skills dd {
+  display: inline;
+  margin: 0;
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+}

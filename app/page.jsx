@@ -2,11 +2,14 @@ import DialogProvider from "@/components/DialogProvider";
 import Header from "@/components/Header";
 import Himalayas from "@/components/Himalayas";
 import Keyboard from "@/components/Keyboard";
+import CaseStudies from "@/components/CaseStudies";
 import ExperienceClock from "@/components/ExperienceClock";
 import Marquee from "@/components/Marquee";
 import { ExperienceSection, ResearchSection, SkillsSection, WorkSection } from "@/components/Sections";
+import { Highlights, NowSection, OpenSourceSection, PrinciplesSection } from "@/components/Stories";
 import { personJsonLd } from "@/config/seo";
-import { CONTACT_URL, LINKS, PROFILE } from "@/config/site";
+import { AVAILABILITY } from "@/config/stories";
+import { CONTACT_URL, LINKS, PROFILE, RESUME_PDF } from "@/config/site";
 
 export default function Home() {
   return (
@@ -24,46 +27,79 @@ export default function Home() {
       <main id="main">
         <section className="hero" aria-labelledby="hero-title">
           <div className="hero-intro">
-            <h1 id="hero-title" className="hero-title">
-              <span className="hero-line">Hi, I’m Sachin.</span>
-              <span className="hero-line">
-                A full-stack <em className="accent-serif">AI engineer</em>
-              </span>
-              <span className="hero-line">who ships to production.</span>
-            </h1>
+            <div className="hero-main">
+              {AVAILABILITY.open && (
+                <p className="availability">
+                  <span className="availability-dot" aria-hidden="true" />
+                  {AVAILABILITY.label} <span className="availability-note">· {AVAILABILITY.note}</span>
+                </p>
+              )}
+              <h1 id="hero-title" className="hero-title">
+                <span className="hero-line">Hi, I’m Sachin.</span>
+                <span className="hero-line">
+                  An AI <em className="accent-serif">solutions architect</em>
+                </span>
+                <span className="hero-line">and CTO who still ships.</span>
+              </h1>
+            </div>
             <div className="hero-aside">
               <p className="hero-kicker">In software and ML since June 2015</p>
               <ExperienceClock />
               <p className="hero-text">{PROFILE.intro}</p>
+              <div className="hero-actions">
+                <a
+                  className="button button-dark"
+                  href={CONTACT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Let’s talk <span aria-hidden="true">↗</span>
+                  <span className="sr-only"> on LinkedIn (opens in a new tab)</span>
+                </a>
+                <a className="button button-light" href={RESUME_PDF} download>
+                  Résumé <span aria-hidden="true">↓</span>
+                  <span className="sr-only"> (PDF)</span>
+                </a>
+              </div>
             </div>
           </div>
           <Keyboard />
         </section>
         <Marquee />
 
+        <Highlights />
         <WorkSection />
+        <CaseStudies />
+        <PrinciplesSection />
         <ExperienceSection />
         <SkillsSection />
         <ResearchSection />
+        <OpenSourceSection />
+        <NowSection />
         <Himalayas />
 
         <section className="contact" id="contact" aria-labelledby="contact-title">
           <h2 id="contact-title" className="contact-title">
-            <span className="contact-line">Building with AI?</span>
+            <span className="contact-line">Leading with AI?</span>
             <span className="contact-line">
               Let’s <em className="accent-serif">talk.</em>
             </span>
           </h2>
           <div className="contact-body">
             <p className="contact-invite">
-              Hiring for AI or platform engineering, or building something ambitious? I’d like to hear
-              about it.
+              Hiring for AI architecture, engineering leadership or a CTO role, or need someone to lead an AI
+              product end to end? I’d like to hear about it.
             </p>
             <a className="contact-primary" href={CONTACT_URL} target="_blank" rel="noopener noreferrer">
               Connect on LinkedIn <span aria-hidden="true">↗</span>
               <span className="sr-only"> (opens in a new tab)</span>
             </a>
             <ul className="contact-links">
+              <li>
+                <a href={RESUME_PDF} download>
+                  Résumé (PDF) <span aria-hidden="true">↓</span>
+                </a>
+              </li>
               <li>
                 <a href={LINKS.github} target="_blank" rel="noopener noreferrer">
                   GitHub <span aria-hidden="true">↗</span>
